@@ -1,11 +1,15 @@
 import { Column, DataType, Model, Table } from 'sequelize-typescript';
 
 interface CustomerAttrs {
-  ticket_id: number;
-  customer_id: number;
-  createdAt: Date;
-  finishedAt: Date;
-  status_id: number;
+  first_name: string;
+  last_name: string;
+  phone: string;
+  hashed_password: string;
+  email: string;
+  birth_date: Date;
+  gender_id: number;
+  lang_id: number;
+  hashed_refresh_token: string;
 }
 
 @Table({ tableName: 'customers' })
@@ -18,18 +22,30 @@ export class Customer extends Model<Customer, CustomerAttrs> {
   })
   id: number;
 
-  @Column({ type: DataType.INTEGER, allowNull: false })
-  ticket_id: number;
+  @Column({ type: DataType.STRING, allowNull: false })
+  first_name: string;
 
-  @Column({ type: DataType.INTEGER })
-  customer_id: number;
+  @Column({ type: DataType.STRING })
+  last_name: string;
 
-  @Column({ type: DataType.DATE, defaultValue: Date.now() })
-  createdAt: Date;
+  @Column({ type: DataType.STRING, allowNull: false })
+  phone: string;
+
+  @Column({ type: DataType.STRING, allowNull: false })
+  hashed_password: string;
+
+  @Column({ type: DataType.STRING, allowNull: false })
+  email: string;
 
   @Column({ type: DataType.DATE })
-  finishedAt: Date;
+  birth_date: Date;
+
+  @Column({ type: DataType.INTEGER, allowNull: false })
+  gender_id: number;
 
   @Column({ type: DataType.INTEGER })
-  status_id: number;
+  lang_id: number;
+
+  @Column({ type: DataType.STRING, allowNull: false })
+  hashed_refresh_token: string;
 }
