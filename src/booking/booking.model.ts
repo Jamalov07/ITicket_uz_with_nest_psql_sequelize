@@ -3,7 +3,7 @@ import { Column, DataType, Model, Table } from 'sequelize-typescript';
 interface BookingAttrs {
   cart_id: number;
   createdAt: Date;
-  finished: Date;
+  finishedAt: Date;
   payment_method_id: number;
   delivery_method_id: number;
   discount_coupon_id: number;
@@ -27,7 +27,7 @@ export class Booking extends Model<Booking, BookingAttrs> {
   createdAt: Date;
 
   @Column({ type: DataType.DATE })
-  finished: Date;
+  finishedAt: Date;
 
   @Column({ type: DataType.INTEGER })
   payment_method_id: number;
