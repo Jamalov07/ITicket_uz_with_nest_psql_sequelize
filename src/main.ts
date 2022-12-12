@@ -7,10 +7,10 @@ const start = async () => {
   try {
     const PORT = process.env.PORT || 3333;
     const app = await NestFactory.create(AppModule);
-    const adapterHost = app.get(HttpAdapterHost);
-    app.useGlobalFilters(new AllExceptionsFilter(adapterHost));
+    // const adapterHost = app.get(HttpAdapterHost);
+    // app.useGlobalFilters(new AllExceptionsFilter(adapterHost));
     app.use(cookieParser());
-    // app.useGlobalPipes(new ValidationPipe());
+    app.useGlobalPipes(new ValidationPipe());
 
     await app.listen(PORT, () => {
       console.log(`Server ${PORT}  portida ishga tushdi`);

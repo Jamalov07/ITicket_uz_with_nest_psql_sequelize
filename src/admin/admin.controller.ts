@@ -47,11 +47,13 @@ export class AdminController {
     @cookieGetter('refresh_token') refreshToken: string,
     @Res({ passthrough: true }) res: Response,
   ) {
+    console.log('aslom', refreshToken);
     return this.adminService.logout(refreshToken, res);
   }
 
   @Get()
   findAll() {
+    console.log('hello');
     return this.adminService.findAll();
   }
 

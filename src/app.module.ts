@@ -28,10 +28,11 @@ import { Admin } from './admin/admin.model';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      // models: [Admin],
+      models: [Admin],
       autoLoadModels: true,
       logging: false,
     }),
+    AdminModule,
     BookingModule,
     CartModule,
     CustomerCardModule,
@@ -46,7 +47,6 @@ import { Admin } from './admin/admin.model';
     VenueModule,
     VenuePhotoModule,
     VenueTypeModule,
-    AdminModule,
   ],
 })
 export class AppModule {}

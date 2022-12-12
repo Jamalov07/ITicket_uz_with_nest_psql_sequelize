@@ -28,13 +28,21 @@ export class AdminService {
     if (candidate) {
       throw new BadRequestException('this login already exists in database');
     }
-    const newAdmin = await this.adminRepo.create(createAdminDto);
+    const hashed_password = await bcrypt.hash(
+      createAdminDto.hashed_password,
+      7,
+    );
+    const newAdmin = await this.adminRepo.create({
+      ...createAdminDto,
+      hashed_password,
+    });
     const tokens = await this.getTokens(
       newAdmin.id,
       newAdmin.login,
       newAdmin.is_active,
       newAdmin.is_creator,
     );
+    console.log(newAdmin, '1222121');
     await this.updateRefreshTokenHash(newAdmin.id, tokens.refresh_token);
     const response: ResponseToAdmin = {
       message: 'Admin Created',
@@ -113,21 +121,24 @@ export class AdminService {
     const adminData = await this.jwtService.verify(refreshToken, {
       secret: process.env.REFRESH_TOKEN_KEY,
     });
+    const { sub, login, is_active, is_creator } = adminData;
     if (!adminData) {
       throw new UnauthorizedException('admin unauthorized logout');
     }
-    const updatedAdmin: Admin = await this.adminRepo.update(
-      {
-        hashed_refresh_token: null,
-      },
-      { where: { id: adminData.sub }, returning: true },
+    const updatedAdmin = await (
+      await this.adminRepo.update(
+        {
+          hashed_refresh_token: null,
+        },
+        { where: { id: sub }, returning: true },
+      )
     )[1][0];
-
     res.clearCookie('refresh_token');
     return { message: 'admin has logged out', admin: updatedAdmin };
   }
 
   async findAll() {
+    console.log(1234);
     const admins = await this.adminRepo.findAll();
     if (!admins) {
       throw new BadRequestException('Admins not found');
@@ -148,16 +159,29 @@ export class AdminService {
     if (!admin) {
       throw new BadRequestException('Admin not found');
     }
-    const candidate = await this.adminRepo.findOne({
-      where: { login: updateAdminDto.login },
-    });
-    if (candidate && candidate.id != id) {
-      throw new BadRequestException('this login already exists in database');
-    }
+    // console.log(admin);
 
-    const updatedAdmin: Admin = await this.adminRepo.update(
-      { ...updateAdminDto },
-      { where: { id: id }, returning: true },
+    if (updateAdminDto.login) {
+      const candidate = await this.adminRepo.findOne({
+        where: { login: updateAdminDto.login },
+      });
+      if (candidate && candidate.id != id) {
+        throw new BadRequestException('this login already exists in database');
+      }
+    }
+    let hash_password: string;
+    if (updateAdminDto.hashed_password) {
+      hash_password = await bcrypt.hash(updateAdminDto.hashed_password, 7);
+    }
+    let hashed_password = hash_password || admin.hashed_password;
+    console.log(hashed_password, 'bu yangi');
+    const updatedAdmin = await (
+      await this.adminRepo.update(
+        {
+          ...updateAdminDto,
+        },
+        { where: { id }, returning: true },
+      )
     )[1][0];
     const tokens = await this.getTokens(
       updatedAdmin.id,

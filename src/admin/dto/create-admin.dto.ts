@@ -10,7 +10,4 @@ export class CreateAdminDto {
   @IsNotEmpty()
   @IsString()
   hashed_password: string;
-  @IsNotEmpty()
-  @IsString()
-  hashed_refresh_token: string;
 }
