@@ -87,7 +87,7 @@ export class CustomerService {
     await this.updateRefreshTokenHash(customer.id, tokens.refresh_token);
 
     const response: ResponseToUser = {
-      message: 'customer created',
+      message: 'customer re-entered the site',
       customer: customer,
       tokens: tokens,
     };
@@ -102,6 +102,7 @@ export class CustomerService {
     const customer = await this.customerRepo.findOne({
       where: { id: customerId },
     });
+    console.log("hello")
     if (!customer || !customer.hashed_refresh_token) {
       throw new ForbiddenException('yoki customer yoki refreshtokeni yoq');
     }
@@ -120,7 +121,7 @@ export class CustomerService {
     );
     await this.updateRefreshTokenHash(customer.id, tokens.refresh_token);
     const response: ResponseToUser = {
-      message: 'customer has re-entered the site',
+      message: 'sended refresh token ',
       customer: customer,
       tokens: tokens,
     };
@@ -207,7 +208,7 @@ export class CustomerService {
     await this.updateRefreshTokenHash(updatedCustomer.id, tokens.refresh_token);
 
     const response: ResponseToUser = {
-      message: 'customer created',
+      message: 'customer updated',
       customer: updatedCustomer,
       tokens: tokens,
     };
@@ -224,6 +225,7 @@ export class CustomerService {
     if (!Customer) {
       throw new BadRequestException('Customer not found');
     }
+    await this.customerRepo.destroy({ where: { id: id } });
     return { message: 'Customer deleted', Customer };
   }
 

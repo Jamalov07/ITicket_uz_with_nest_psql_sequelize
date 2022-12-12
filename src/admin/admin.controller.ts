@@ -33,7 +33,7 @@ export class AdminController {
     return this.adminService.loginAdmin(authBody, res);
   }
 
-  @Post('refresh')
+  @Post(':id/refresh')
   refreshToken(
     @Param('id') id: string,
     @cookieGetter('refresh_token') refreshToken: string,

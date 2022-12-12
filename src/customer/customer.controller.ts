@@ -43,7 +43,7 @@ export class CustomerController {
     return this.customerService.logout(refreshToken, res);
   }
 
-  @Post('refresh')
+  @Post(':id/refresh')
   refreshToken(
     @Param('id') id: string,
     @cookieGetter('refresh_token') refreshToken: string,
