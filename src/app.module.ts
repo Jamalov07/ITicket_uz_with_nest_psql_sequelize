@@ -14,8 +14,38 @@ import { VenueModule } from './venue/venue.module';
 import { VenuePhotoModule } from './venue_photo/venue_photo.module';
 import { VenueTypeModule } from './venue_type/venue_type.module';
 import { AdminModule } from './admin/admin.module';
+import { ConfigModule } from '@nestjs/config';
+import { SequelizeModule } from '@nestjs/sequelize';
 
 @Module({
-  imports: [BookingModule, CartModule, CustomerCardModule, CustomerModule, TicketModule, CustomerAddressModule, EventModule, SeatModule, SeatTypeModule, EventTypeModule, HumanCategoryModule, VenueModule, VenuePhotoModule, VenueTypeModule, AdminModule],
+  imports: [
+    ConfigModule.forRoot({ envFilePath: `.${process.env.NODE_ENV}.env` }),
+    SequelizeModule.forRoot({
+      dialect: 'postgres',
+      host: process.env.POSTGRES_HOST,
+      port: Number(process.env.POSTGRES_PORT),
+      username: process.env.POSTGRES_USER,
+      password: process.env.POSTGRES_PASSWORD,
+      database: process.env.POSTGRES_DB,
+      // models: [],
+      autoLoadModels: true,
+      logging: false,
+    }),
+    BookingModule,
+    CartModule,
+    CustomerCardModule,
+    CustomerModule,
+    TicketModule,
+    CustomerAddressModule,
+    EventModule,
+    SeatModule,
+    SeatTypeModule,
+    EventTypeModule,
+    HumanCategoryModule,
+    VenueModule,
+    VenuePhotoModule,
+    VenueTypeModule,
+    AdminModule,
+  ],
 })
 export class AppModule {}
