@@ -1,26 +1,65 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
+import { Admin } from './admin.model';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 
 @Injectable()
 export class AdminService {
-  create(createAdminDto: CreateAdminDto) {
-    return 'This action adds a new admin';
+  constructor(@InjectModel(Admin) private adminRepo: typeof Admin) {}
+  async create(createAdminDto: CreateAdminDto) {
+    const candidate = await this.adminRepo.findOne({
+      where: { login: createAdminDto.login },
+    });
+    if (candidate) {
+      throw new BadRequestException('this login already exists in database');
+    }
+    const newAdmin = await this.adminRepo.create(createAdminDto);
+
+    return newAdmin;
   }
 
-  findAll() {
-    return `This action returns all admin`;
+  async findAll() {
+    const admins = await this.adminRepo.findAll();
+    if (!admins) {
+      throw new BadRequestException('Admins not found');
+    }
+    return admins;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} admin`;
+  async findOne(id: number) {
+    const admin = await this.adminRepo.findOne({ where: { id: id } });
+    if (!admin) {
+      throw new BadRequestException('Admin not found');
+    }
+    return admin;
   }
 
-  update(id: number, updateAdminDto: UpdateAdminDto) {
-    return `This action updates a #${id} admin`;
+  async update(id: number, updateAdminDto: UpdateAdminDto) {
+    const admin = await this.adminRepo.findOne({ where: { id: id } });
+    if (!admin) {
+      throw new BadRequestException('Admin not found');
+    }
+    const candidate = await this.adminRepo.findOne({
+      where: { login: updateAdminDto.login },
+    });
+    if (candidate && candidate.id != id) {
+      throw new BadRequestException('this login already exists in database');
+    }
+
+    const updatedAdmin = await this.adminRepo.update(
+      { ...updateAdminDto },
+      { where: { id: id } },
+    );
+    return updatedAdmin;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} admin`;
+  async remove(id: number) {
+    const admin = await this.adminRepo.findOne({ where: { id: id } });
+    if (!admin) {
+      throw new BadRequestException('Admin not found');
+    }
+    await this.adminRepo.destroy({ where: { id: id } });
+    return { message: 'admin deleted', admin };
   }
 }

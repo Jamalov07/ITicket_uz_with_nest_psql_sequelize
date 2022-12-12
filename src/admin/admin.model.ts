@@ -23,6 +23,9 @@ export class Admin extends Model<Admin, AdminAttrs> {
   name: string;
 
   @Column({ type: DataType.STRING, allowNull: false })
+  login: string;
+
+  @Column({ type: DataType.STRING, allowNull: false })
   hashed_password: string;
 
   @Column({ type: DataType.BOOLEAN, defaultValue: false })
