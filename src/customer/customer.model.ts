@@ -46,6 +46,6 @@ export class Customer extends Model<Customer, CustomerAttrs> {
   @Column({ type: DataType.INTEGER })
   lang_id: number;
 
-  @Column({ type: DataType.STRING, allowNull: false })
+  @Column({ type: DataType.STRING })
   hashed_refresh_token: string;
 }

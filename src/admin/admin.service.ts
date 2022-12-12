@@ -7,7 +7,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/sequelize';
 import { JwtPayload } from '../types/jwtPayload.type';
-import { ResponseToAdmin } from '../types/resAdmin.type';
+import { ResponseToAdmin } from '../types/resToAdminorCustomer.type';
 import { Tokens } from '../types/tokens.type';
 import { Admin } from './admin.model';
 import { CreateAdminDto } from './dto/create-admin.dto';
@@ -42,7 +42,7 @@ export class AdminService {
       newAdmin.is_active,
       newAdmin.is_creator,
     );
-    console.log(newAdmin, '1222121');
+
     await this.updateRefreshTokenHash(newAdmin.id, tokens.refresh_token);
     const response: ResponseToAdmin = {
       message: 'Admin Created',

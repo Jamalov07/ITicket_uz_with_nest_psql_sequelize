@@ -3,35 +3,37 @@
 
 // export class UpdateCustomerDto extends PartialType(CreateCustomerDto) {}
 
-
-import { IsDateString, IsOptional, IsNumber, IsString } from 'class-validator';
-
+import {
+  IsDateString,
+  IsOptional,
+  IsNumber,
+  IsString,
+  IsPhoneNumber,
+  IsEmail,
+} from 'class-validator';
 export class UpdateCustomerDto {
   @IsOptional()
   @IsString()
-  first_name: string;
+  first_name?: string;
   @IsOptional()
   @IsString()
-  last_name: string;
+  last_name?: string;
+  @IsOptional()
+  @IsPhoneNumber('UZ')
+  phone?: string;
   @IsOptional()
   @IsString()
-  phone: string;
+  hashed_password?: string;
   @IsOptional()
-  @IsString()
-  hashed_password: string;
-  @IsOptional()
-  @IsString()
-  email: string;
+  @IsEmail()
+  email?: string;
   @IsOptional()
   @IsDateString()
-  birth_date: Date;
+  birth_date?: Date;
   @IsOptional()
   @IsNumber()
-  gender_id: number;
+  gender_id?: number;
   @IsOptional()
   @IsNumber()
-  lang_id: number;
-  @IsOptional()
-  @IsString()
-  hashed_refresh_token: string;
+  lang_id?: number;
 }
