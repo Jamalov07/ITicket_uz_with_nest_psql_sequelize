@@ -1,16 +1,17 @@
 import { Column, DataType, Model, Table } from 'sequelize-typescript';
 
-interface AdminAttrs {
-  name: string;
-  login: string;
-  hashed_password: string;
-  is_active: boolean;
-  is_creator: boolean;
-  hashed_refresh_token: string;
+interface BookingAttrs {
+  cart_id: number;
+  createdAt: Date;
+  finished: Date;
+  payment_method_id: number;
+  delivery_method_id: number;
+  discount_coupon_id: number;
+  status_id: number;
 }
 
-@Table({ tableName: 'admins' })
-export class Admin extends Model<Admin, AdminAttrs> {
+@Table({ tableName: 'bookings' })
+export class Booking extends Model<Booking, BookingAttrs> {
   @Column({
     type: DataType.INTEGER,
     unique: true,
@@ -19,21 +20,24 @@ export class Admin extends Model<Admin, AdminAttrs> {
   })
   id: number;
 
-  @Column({ type: DataType.STRING, allowNull: false })
-  name: string;
+  @Column({ type: DataType.INTEGER, allowNull: false })
+  cart_id: number;
 
-  @Column({ type: DataType.STRING, allowNull: false })
-  login: string;
+  @Column({ type: DataType.DATE, defaultValue: Date.now() })
+  createdAt: Date;
 
-  @Column({ type: DataType.STRING, allowNull: false })
-  hashed_password: string;
+  @Column({ type: DataType.DATE })
+  finished: Date;
 
-  @Column({ type: DataType.BOOLEAN, defaultValue: false })
-  is_active: boolean;
+  @Column({ type: DataType.INTEGER })
+  payment_method_id: number;
 
-  @Column({ type: DataType.BOOLEAN, defaultValue: false })
-  is_creator: boolean;
+  @Column({ type: DataType.INTEGER })
+  delivery_method_id: number;
 
-  @Column({ type: DataType.STRING })
-  hashed_refresh_token: string;
+  @Column({ type: DataType.INTEGER })
+  discount_coupon_id: number;
+
+  @Column({ type: DataType.INTEGER })
+  status_id: number;
 }
