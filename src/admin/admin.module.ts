@@ -9,5 +9,6 @@ import { JwtModule } from '@nestjs/jwt';
   imports: [SequelizeModule.forFeature([Admin]), JwtModule.register({})],
   controllers: [AdminController],
   providers: [AdminService],
+  exports: [JwtModule],
 })
 export class AdminModule {}

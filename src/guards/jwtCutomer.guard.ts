@@ -7,10 +7,9 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Observable } from 'rxjs';
-import { AdminService } from '../admin/admin.service';
 
 @Injectable()
-export class AdminGuard implements CanActivate {
+export class CustomerGuard implements CanActivate {
   constructor(private readonly jwtService: JwtService) {}
   canActivate(
     context: ExecutionContext,
@@ -18,26 +17,23 @@ export class AdminGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const authHeaders = request.headers.authorization;
     if (!authHeaders) {
-      throw new UnauthorizedException('Admin umuman authorized');
+      throw new UnauthorizedException('customer umuman authorized');
     }
     const bearer = authHeaders.split(' ')[0];
     const token = authHeaders.split(' ')[1];
     if (bearer !== 'Bearer' || !token) {
-      throw new UnauthorizedException('Admin not authorized');
+      throw new UnauthorizedException('customer not authorized');
     }
     async function validate(token: string, jwtService: JwtService) {
-      const adminData = await jwtService.verify(token, {
+      const customerData = await jwtService.verify(token, {
         secret: process.env.ACCESS_TOKEN_KEY,
       });
-      if (!adminData) {
-        throw new UnauthorizedException('admin not authorized func1');
+      if (!customerData) {
+        throw new UnauthorizedException('customer not authorized func1');
       }
-      console.log(adminData);
-      if (adminData.is_creator) {
-        return true;
-      }
-      if (!adminData.is_active) {
-        throw new BadRequestException('admin not active');
+      console.log(customerData);
+      if (!customerData.sub) {
+        throw new BadRequestException('customer not active');
       }
       return true;
     }
@@ -45,7 +41,7 @@ export class AdminGuard implements CanActivate {
   }
 }
 
-// sub: adminId,
+// sub: customerId,
 // login,
 // is_active,
 // is_creator,

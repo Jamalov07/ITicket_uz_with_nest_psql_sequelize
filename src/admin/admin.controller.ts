@@ -8,9 +8,11 @@ import {
   Delete,
   Res,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { cookieGetter } from '../decorators/cookieGetter.decorator';
+import { AdminGuard } from '../guards/jwtAdmin.guard';
 import { AuthBody } from '../types/loginAdmin.type';
 import { AdminService } from './admin.service';
 import { CreateAdminDto } from './dto/create-admin.dto';
@@ -52,6 +54,7 @@ export class AdminController {
   }
 
   @Get()
+  @UseGuards(AdminGuard)
   findAll() {
     console.log('hello');
     return this.adminService.findAll();

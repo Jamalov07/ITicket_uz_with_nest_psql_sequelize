@@ -1,7 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
 import { TicketService } from './ticket.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
+import { CustomerGuard } from '../guards/jwtCutomer.guard';
 
 @Controller('ticket')
 export class TicketController {
@@ -11,7 +21,7 @@ export class TicketController {
   create(@Body() createTicketDto: CreateTicketDto) {
     return this.ticketService.create(createTicketDto);
   }
-
+  @UseGuards(CustomerGuard)
   @Get()
   findAll() {
     return this.ticketService.findAll();
