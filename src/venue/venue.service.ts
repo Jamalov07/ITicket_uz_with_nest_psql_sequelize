@@ -6,6 +6,7 @@ import { Venue } from './venue.model';
 
 @Injectable()
 export class VenueService {
+  
   constructor(
     @InjectModel(Venue)
     private venueRepo: typeof Venue,
@@ -63,7 +64,6 @@ export class VenueService {
     )[1][0];
     return updatedVenue;
   }
-
   async remove(id: number) {
     const Venue = await this.venueRepo.findOne({
       where: { id: id },
