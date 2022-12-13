@@ -25,17 +25,17 @@ export class Event extends Model<Event, EventAttrs> {
   })
   id: number;
 
-  @Column({ type: DataType.INTEGER, allowNull: false })
+  @Column({ type: DataType.STRING, allowNull: false })
   name: string;
   @Column({ type: DataType.STRING, allowNull: false })
   photo: string;
   @Column({ type: DataType.DATE, allowNull: false })
   start_date: Date;
-  @Column({ type: DataType.STRING, allowNull: false })
+  @Column({ type: DataType.TIME, allowNull: false })
   start_time: string;
   @Column({ type: DataType.DATE, allowNull: false })
   finish_date: Date;
-  @Column({ type: DataType.STRING, allowNull: false })
+  @Column({ type: DataType.TIME, allowNull: false })
   finish_time: string;
   @Column({ type: DataType.STRING, allowNull: false })
   info: string;
