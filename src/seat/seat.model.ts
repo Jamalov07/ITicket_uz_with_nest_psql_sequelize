@@ -22,7 +22,7 @@ export class Seat extends Model<Seat, SeatAttrs> {
   @Column({ type: DataType.INTEGER, allowNull: false })
   sector: number;
   @Column({ type: DataType.INTEGER, allowNull: false })
-  row_nubmer: number;
+  row_number: number;
   @Column({ type: DataType.INTEGER, allowNull: false })
   number: number;
   @Column({ type: DataType.INTEGER, allowNull: false })
@@ -30,5 +30,5 @@ export class Seat extends Model<Seat, SeatAttrs> {
   @Column({ type: DataType.INTEGER, allowNull: false })
   seat_type_id: number;
   @Column({ type: DataType.STRING, allowNull: false })
-  location_is_schema: string;
+  location_in_schema: string;
 }
