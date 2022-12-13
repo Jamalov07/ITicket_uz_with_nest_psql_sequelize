@@ -33,8 +33,8 @@ export class Customer_card extends Model<Customer_card, Customer_cardAttrs> {
   year: string;
   @Column({ type: DataType.STRING, allowNull: false })
   month: string;
-  @Column({ type: DataType.BOOLEAN, allowNull: false })
+  @Column({ type: DataType.BOOLEAN, defaultValue: true })
   is_active: boolean;
-  @Column({ type: DataType.BOOLEAN, allowNull: false })
+  @Column({ type: DataType.BOOLEAN, defaultValue: true })
   is_main: boolean;
 }
