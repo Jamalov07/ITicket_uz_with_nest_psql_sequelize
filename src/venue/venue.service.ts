@@ -1,26 +1,79 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
 import { CreateVenueDto } from './dto/create-venue.dto';
 import { UpdateVenueDto } from './dto/update-venue.dto';
+import { Venue } from './venue.model';
 
 @Injectable()
 export class VenueService {
-  create(createVenueDto: CreateVenueDto) {
-    return 'This action adds a new venue';
+  constructor(
+    @InjectModel(Venue)
+    private venueRepo: typeof Venue,
+  ) {}
+
+  async create(createVenueDto: CreateVenueDto) {
+    const candidate = await this.venueRepo.findOne({
+      where: { ...createVenueDto },
+    });
+    if (candidate) {
+      throw new BadRequestException('this datas already axists in database');
+    }
+    const newVenue = await this.venueRepo.create(createVenueDto);
+    return newVenue;
   }
 
-  findAll() {
-    return `This action returns all venue`;
+  async findAll() {
+    const venues = await this.venueRepo.findAll();
+    if (!venues) {
+      throw new BadRequestException('venues not found');
+    }
+    return venues;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} venue`;
+  async findOne(id: number) {
+    const venue = await this.venueRepo.findOne({
+      where: { id: id },
+    });
+    if (!venue) {
+      throw new BadRequestException('venue not found');
+    }
+    return venue;
   }
 
-  update(id: number, updateVenueDto: UpdateVenueDto) {
-    return `This action updates a #${id} venue`;
+  async update(id: number, updateVenueDto: UpdateVenueDto) {
+    const venue = await this.venueRepo.findOne({
+      where: { id: id },
+    });
+    if (!venue) {
+      throw new BadRequestException('Venue not found');
+    }
+
+    const candidate = await this.venueRepo.findOne({
+      where: { ...updateVenueDto },
+    });
+    if (candidate && candidate.id != id) {
+      throw new BadRequestException('This data already exists');
+    }
+
+    const updatedVenue = await (
+      await this.venueRepo.update(updateVenueDto, {
+        where: { id: id },
+        returning: true,
+      })
+    )[1][0];
+    return updatedVenue;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} venue`;
+  async remove(id: number) {
+    const Venue = await this.venueRepo.findOne({
+      where: { id: id },
+    });
+    if (!Venue) {
+      throw new BadRequestException('Venue not found');
+    }
+    await this.venueRepo.destroy({ where: { id: id } });
+
+    return { message: 'Venue deleted', Venue };
   }
+
 }
