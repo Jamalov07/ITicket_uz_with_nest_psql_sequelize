@@ -1,26 +1,78 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
 import { CreateSeatDto } from './dto/create-seat.dto';
 import { UpdateSeatDto } from './dto/update-seat.dto';
+import { Seat } from './seat.model';
 
 @Injectable()
 export class SeatService {
-  create(createSeatDto: CreateSeatDto) {
-    return 'This action adds a new seat';
+  constructor(
+    @InjectModel(Seat)
+    private seatRepo: typeof Seat,
+  ) {}
+
+  async create(createSeatDto: CreateSeatDto) {
+    const candidate = await this.seatRepo.findOne({
+      where: { ...createSeatDto },
+    });
+    if (candidate) {
+      throw new BadRequestException('this datas already axists in database');
+    }
+    const newSeat = await this.seatRepo.create(createSeatDto);
+    return newSeat;
   }
 
-  findAll() {
-    return `This action returns all seat`;
+  async findAll() {
+    const seats = await this.seatRepo.findAll();
+    if (!seats) {
+      throw new BadRequestException('Seats not found');
+    }
+    return seats;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} seat`;
+  async findOne(id: number) {
+    const seat = await this.seatRepo.findOne({
+      where: { id: id },
+    });
+    if (!seat) {
+      throw new BadRequestException('Seat not found');
+    }
+    return seat;
   }
 
-  update(id: number, updateSeatDto: UpdateSeatDto) {
-    return `This action updates a #${id} seat`;
+  async update(id: number, updateSeatDto: UpdateSeatDto) {
+    const seat = await this.seatRepo.findOne({
+      where: { id: id },
+    });
+    if (!seat) {
+      throw new BadRequestException('Seat not found');
+    }
+
+    const candidate = await this.seatRepo.findOne({
+      where: { ...updateSeatDto },
+    });
+    if (candidate && candidate.id != id) {
+      throw new BadRequestException('This data already exists');
+    }
+
+    const updatedSeat = await (
+      await this.seatRepo.update(updateSeatDto, {
+        where: { id: id },
+        returning: true,
+      })
+    )[1][0];
+    return updatedSeat;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} seat`;
+  async remove(id: number) {
+    const Seat = await this.seatRepo.findOne({
+      where: { id: id },
+    });
+    if (!Seat) {
+      throw new BadRequestException('Seat not found');
+    }
+    await this.seatRepo.destroy({ where: { id: id } });
+
+    return { message: 'Seat deleted', Seat };
   }
 }
