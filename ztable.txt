@@ -1,0 +1,26 @@
+booking
+admin
+cart
+customer_card
+ticket
+customer
+customer_address
+event
+seat
+seat_type
+venue
+event_type
+human_category
+venue_photo
+venue_type
+payment_method =>  id, name,description
+delivery_method => id, name, description
+discount_coupon => id, name, description
+status => id, name, description
+ticket_type => id, name,description
+lang => id ,name, description
+country => id,name,description
+region => id,name,description
+district => id,name,description
+flat => id , name, description
+gender => id, name , description
