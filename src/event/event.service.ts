@@ -8,22 +8,22 @@ import { Event } from './event.model';
 export class EventService {
   constructor(
     @InjectModel(Event)
-    private customerCardRepo: typeof Event,
+    private eventRepo: typeof Event,
   ) {}
 
   async create(createEventDto: CreateEventDto) {
-    const candidate = await this.customerCardRepo.findOne({
+    const candidate = await this.eventRepo.findOne({
       where: { ...createEventDto },
     });
     if (candidate) {
       throw new BadRequestException('this datas already axists in database');
     }
-    const newEvent = await this.customerCardRepo.create(createEventDto);
+    const newEvent = await this.eventRepo.create(createEventDto);
     return newEvent;
   }
 
   async findAll() {
-    const events = await this.customerCardRepo.findAll();
+    const events = await this.eventRepo.findAll();
     if (!events) {
       throw new BadRequestException('Events not found');
     }
@@ -31,7 +31,7 @@ export class EventService {
   }
 
   async findOne(id: number) {
-    const event = await this.customerCardRepo.findOne({
+    const event = await this.eventRepo.findOne({
       where: { id: id },
     });
     if (!event) {
@@ -41,14 +41,14 @@ export class EventService {
   }
 
   async update(id: number, updateEventDto: UpdateEventDto) {
-    const event = await this.customerCardRepo.findOne({
+    const event = await this.eventRepo.findOne({
       where: { id: id },
     });
     if (!event) {
       throw new BadRequestException('Event not found');
     }
 
-    const candidate = await this.customerCardRepo.findOne({
+    const candidate = await this.eventRepo.findOne({
       where: { ...updateEventDto },
     });
     if (candidate && candidate.id != id) {
@@ -56,7 +56,7 @@ export class EventService {
     }
 
     const updatedEvent = await (
-      await this.customerCardRepo.update(updateEventDto, {
+      await this.eventRepo.update(updateEventDto, {
         where: { id: id },
         returning: true,
       })
@@ -65,13 +65,13 @@ export class EventService {
   }
 
   async remove(id: number) {
-    const Event = await this.customerCardRepo.findOne({
+    const Event = await this.eventRepo.findOne({
       where: { id: id },
     });
     if (!Event) {
       throw new BadRequestException('Event not found');
     }
-    await this.customerCardRepo.destroy({ where: { id: id } });
+    await this.eventRepo.destroy({ where: { id: id } });
 
     return { message: 'Event deleted', Event };
   }
