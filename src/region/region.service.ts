@@ -22,7 +22,7 @@ export class RegionService {
   }
 
   async findAll() {
-    const regions = await this.regionRepo.findAll();
+    const regions = await this.regionRepo.findAll({ include: { all: true } });
     if (!regions) {
       throw new BadRequestException('regions not found');
     }
@@ -32,6 +32,7 @@ export class RegionService {
   async findOne(id: number) {
     const region = await this.regionRepo.findOne({
       where: { id: id },
+      include: { all: true },
     });
     if (!region) {
       throw new BadRequestException('region not found');

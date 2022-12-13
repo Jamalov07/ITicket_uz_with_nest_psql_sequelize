@@ -28,6 +28,29 @@ import { RegionModule } from './region/region.module';
 import { DistrictModule } from './district/district.module';
 import { GenderModule } from './gender/gender.module';
 import { Country } from './country/country.model';
+import { Booking } from './booking/booking.model';
+import { Cart } from './cart/cart.model';
+import { Customer } from './customer/customer.model';
+import { Customer_address } from './customer_address/customer_address.model';
+import { Customer_card } from './customer_card/customer_card.model';
+import { Delivery_method } from './delivery_method/delivery_method.model';
+import { Discount_coupon } from './discount_coupon/discount_coupon.model';
+import { District } from './district/district.model';
+import { Event } from './event/event.model';
+import { Event_type } from './event_type/event_type.model';
+import { Gender } from './gender/gender.model';
+import { Human_Category } from './human_category/human_category.model';
+import { Language } from './language/language.model';
+import { Payment_method } from './payment_method/payment_method.model';
+import { Region } from './region/region.model';
+import { Seat } from './seat/seat.model';
+import { Seat_Type } from './seat_type/seat_type.model';
+import { Status } from './status/status.model';
+import { Ticket } from './ticket/ticket.model';
+import { Ticket_type } from './ticket_type/ticket_type.model';
+import { Venue } from './venue/venue.model';
+import { Venue_type } from './venue_type/venue_type.model';
+import { Venue_photo } from './venue_photo/venue_photo.model';
 
 @Module({
   imports: [
@@ -39,7 +62,33 @@ import { Country } from './country/country.model';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [Admin],
+      models: [
+        Admin,
+        Booking,
+        Cart,
+        Country,
+        Customer,
+        Customer_address,
+        Customer_card,
+        Delivery_method,
+        Discount_coupon,
+        District,
+        Event,
+        Event_type,
+        Gender,
+        Human_Category,
+        Language,
+        Payment_method,
+        Region,
+        Seat,
+        Seat_Type,
+        Status,
+        Ticket,
+        Ticket_type,
+        Venue,
+        Venue_type,
+        Venue_photo,
+      ],
       autoLoadModels: true,
       logging: false,
     }),

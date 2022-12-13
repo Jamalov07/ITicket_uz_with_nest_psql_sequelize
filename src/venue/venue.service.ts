@@ -6,7 +6,6 @@ import { Venue } from './venue.model';
 
 @Injectable()
 export class VenueService {
-  
   constructor(
     @InjectModel(Venue)
     private venueRepo: typeof Venue,
@@ -24,7 +23,7 @@ export class VenueService {
   }
 
   async findAll() {
-    const venues = await this.venueRepo.findAll();
+    const venues = await this.venueRepo.findAll({ include: { all: true } });
     if (!venues) {
       throw new BadRequestException('venues not found');
     }
@@ -34,6 +33,7 @@ export class VenueService {
   async findOne(id: number) {
     const venue = await this.venueRepo.findOne({
       where: { id: id },
+      include: { all: true },
     });
     if (!venue) {
       throw new BadRequestException('venue not found');
@@ -75,5 +75,4 @@ export class VenueService {
 
     return { message: 'Venue deleted', Venue };
   }
-
 }

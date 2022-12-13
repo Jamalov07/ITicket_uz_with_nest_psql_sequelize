@@ -1,4 +1,5 @@
-import { Column, DataType, Model, Table } from 'sequelize-typescript';
+import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
+import { Venue } from '../venue/venue.model';
 
 interface Venue_typeAttrs {
   name: string;
@@ -16,4 +17,7 @@ export class Venue_type extends Model<Venue_type, Venue_typeAttrs> {
 
   @Column({ type: DataType.STRING, allowNull: false })
   name: string;
+
+  @HasMany(() => Venue)
+  venues: Venue[];
 }

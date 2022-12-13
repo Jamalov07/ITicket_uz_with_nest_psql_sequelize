@@ -23,7 +23,9 @@ export class VenueTypeService {
   }
 
   async findAll() {
-    const venue_types = await this.venueTypeRepo.findAll();
+    const venue_types = await this.venueTypeRepo.findAll({
+      include: { all: true },
+    });
     if (!venue_types) {
       throw new BadRequestException('venue_types not found');
     }
@@ -33,6 +35,7 @@ export class VenueTypeService {
   async findOne(id: number) {
     const venue_type = await this.venueTypeRepo.findOne({
       where: { id: id },
+      include: { all: true },
     });
     if (!venue_type) {
       throw new BadRequestException('venue_type not found');

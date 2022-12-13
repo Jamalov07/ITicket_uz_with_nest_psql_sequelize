@@ -22,7 +22,7 @@ export class StatusService {
   }
 
   async findAll() {
-    const statuss = await this.statusRepo.findAll();
+    const statuss = await this.statusRepo.findAll({ include: { all: true } });
     if (!statuss) {
       throw new BadRequestException('statuss not found');
     }
@@ -32,6 +32,7 @@ export class StatusService {
   async findOne(id: number) {
     const status = await this.statusRepo.findOne({
       where: { id: id },
+      include: { all: true },
     });
     if (!status) {
       throw new BadRequestException('status not found');

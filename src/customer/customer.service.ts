@@ -102,7 +102,7 @@ export class CustomerService {
     const customer = await this.customerRepo.findOne({
       where: { id: customerId },
     });
-    console.log("hello")
+    console.log('hello');
     if (!customer || !customer.hashed_refresh_token) {
       throw new ForbiddenException('yoki customer yoki refreshtokeni yoq');
     }
@@ -153,7 +153,9 @@ export class CustomerService {
   }
 
   async findAll() {
-    const customers = await this.customerRepo.findAll();
+    const customers = await this.customerRepo.findAll({
+      include: { all: true },
+    });
     if (!customers) {
       throw new BadRequestException('Customers not found');
     }
@@ -161,7 +163,10 @@ export class CustomerService {
   }
 
   async findOne(id: number) {
-    const customer = await this.customerRepo.findOne({ where: { id: id } });
+    const customer = await this.customerRepo.findOne({
+      where: { id: id },
+      include: { all: true },
+    });
     if (!customer) {
       throw new BadRequestException('Customer not found');
     }

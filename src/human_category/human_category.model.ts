@@ -1,4 +1,5 @@
-import { Column, DataType, Model, Table } from 'sequelize-typescript';
+import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript';
+import { Gender } from '../gender/gender.model';
 
 interface Human_categoryAttrs {
   name: string;
@@ -23,6 +24,10 @@ export class Human_Category extends Model<Human_Category, Human_categoryAttrs> {
   start_age: number;
   @Column({ type: DataType.INTEGER, defaultValue: 70 })
   finish_age: number;
+
+  @ForeignKey(()=>Gender)
   @Column({ type: DataType.INTEGER, allowNull: false })
   gender_id: number;
+  @BelongsTo(() => Gender)
+  gender: Gender;
 }

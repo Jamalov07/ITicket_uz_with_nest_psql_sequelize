@@ -23,7 +23,7 @@ export class EventTypeService {
   }
 
   async findAll() {
-    const event_types = await this.eventTypeRepo.findAll();
+    const event_types = await this.eventTypeRepo.findAll({ include: { all: true } });
     if (!event_types) {
       throw new BadRequestException('Event_types not found');
     }
@@ -32,7 +32,7 @@ export class EventTypeService {
 
   async findOne(id: number) {
     const event_type = await this.eventTypeRepo.findOne({
-      where: { id: id },
+      where: { id: id },include: { all: true }
     });
     if (!event_type) {
       throw new BadRequestException('Event_type not found');

@@ -23,7 +23,9 @@ export class SeatTypeService {
   }
 
   async findAll() {
-    const seat_types = await this.seat_typeRepo.findAll();
+    const seat_types = await this.seat_typeRepo.findAll({
+      include: { all: true },
+    });
     if (!seat_types) {
       throw new BadRequestException('Seat_types not found');
     }
@@ -33,6 +35,7 @@ export class SeatTypeService {
   async findOne(id: number) {
     const seat_type = await this.seat_typeRepo.findOne({
       where: { id: id },
+      include: { all: true },
     });
     if (!seat_type) {
       throw new BadRequestException('Seat_type not found');

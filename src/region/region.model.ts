@@ -1,4 +1,6 @@
-import { Column, DataType, Model, Table } from 'sequelize-typescript';
+import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
+import { Customer_address } from '../customer_address/customer_address.model';
+import { Venue } from '../venue/venue.model';
 
 interface RegionAttrs {
   name: string;
@@ -19,4 +21,10 @@ export class Region extends Model<Region, RegionAttrs> {
   name: string;
   @Column({ type: DataType.STRING, allowNull: false })
   description: string;
+
+  @HasMany(() => Customer_address)
+  customers: Customer_address[];
+
+  @HasMany(() => Venue)
+  venues: Venue[];
 }

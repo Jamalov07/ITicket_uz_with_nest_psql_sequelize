@@ -22,7 +22,9 @@ export class LanguageService {
   }
 
   async findAll() {
-    const languages = await this.languageRepo.findAll();
+    const languages = await this.languageRepo.findAll({
+      include: { all: true },
+    });
     if (!languages) {
       throw new BadRequestException('languages not found');
     }
@@ -32,6 +34,7 @@ export class LanguageService {
   async findOne(id: number) {
     const language = await this.languageRepo.findOne({
       where: { id: id },
+      include: { all: true },
     });
     if (!language) {
       throw new BadRequestException('language not found');

@@ -19,7 +19,7 @@ export class CountryService {
   }
 
   async findAll() {
-    const countrys = await this.countryRepo.findAll();
+    const countrys = await this.countryRepo.findAll({ include: { all: true } });
     if (!countrys) {
       throw new BadRequestException('countrys not found');
     }
@@ -27,7 +27,10 @@ export class CountryService {
   }
 
   async findOne(id: number) {
-    const country = await this.countryRepo.findOne({ where: { id: id } });
+    const country = await this.countryRepo.findOne({
+      where: { id: id },
+      include: { all: true },
+    });
     if (!country) {
       throw new BadRequestException('country not found');
     }

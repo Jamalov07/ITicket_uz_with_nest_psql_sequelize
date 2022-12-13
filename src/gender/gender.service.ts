@@ -22,7 +22,7 @@ export class GenderService {
   }
 
   async findAll() {
-    const genders = await this.genderRepo.findAll();
+    const genders = await this.genderRepo.findAll({ include: { all: true } });
     if (!genders) {
       throw new BadRequestException('genders not found');
     }
@@ -31,7 +31,7 @@ export class GenderService {
 
   async findOne(id: number) {
     const gender = await this.genderRepo.findOne({
-      where: { id: id },
+      where: { id: id },include: { all: true }
     });
     if (!gender) {
       throw new BadRequestException('gender not found');

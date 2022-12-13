@@ -24,7 +24,9 @@ export class TicketTypeService {
   }
 
   async findAll() {
-    const ticket_types = await this.ticketTypeRepo.findAll();
+    const ticket_types = await this.ticketTypeRepo.findAll({
+      include: { all: true },
+    });
     if (!ticket_types) {
       throw new BadRequestException('ticket_types not found');
     }
@@ -34,6 +36,7 @@ export class TicketTypeService {
   async findOne(id: number) {
     const ticket_type = await this.ticketTypeRepo.findOne({
       where: { id: id },
+      include: { all: true },
     });
     if (!ticket_type) {
       throw new BadRequestException('ticket_type not found');

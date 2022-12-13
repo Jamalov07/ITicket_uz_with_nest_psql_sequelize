@@ -1,4 +1,15 @@
-import { Column, DataType, Model, Table } from 'sequelize-typescript';
+import {
+  BelongsTo,
+  Column,
+  DataType,
+  ForeignKey,
+  Model,
+  Table,
+} from 'sequelize-typescript';
+import { Country } from '../country/country.model';
+import { Customer } from '../customer/customer.model';
+import { District } from '../district/district.model';
+import { Region } from '../region/region.model';
 
 interface Customer_addressAttrs {
   customer_id: number;
@@ -27,16 +38,33 @@ export class Customer_address extends Model<
   })
   id: number;
 
+  @ForeignKey(() => Customer)
   @Column({ type: DataType.INTEGER, allowNull: false })
   customer_id: number;
+  @BelongsTo(() => Customer)
+  customer: Customer;
+
   @Column({ type: DataType.STRING, allowNull: false })
   name: string;
+
+  @ForeignKey(() => Country)
   @Column({ type: DataType.INTEGER, allowNull: false })
   country_id: number;
+  @BelongsTo(() => Country)
+  country: Country;
+
+  @ForeignKey(() => Region)
   @Column({ type: DataType.INTEGER, allowNull: false })
   region_id: number;
+  @BelongsTo(() => Region)
+  region: Region;
+
+  @ForeignKey(() => District)
   @Column({ type: DataType.INTEGER, allowNull: false })
   district_id: number;
+  @BelongsTo(() => District)
+  district: District;
+  
   @Column({ type: DataType.STRING, allowNull: false })
   street: string;
   @Column({ type: DataType.STRING, allowNull: false })

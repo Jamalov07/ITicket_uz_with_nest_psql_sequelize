@@ -1,4 +1,12 @@
-import { Column, DataType, Model, Table } from 'sequelize-typescript';
+import {
+  BelongsTo,
+  Column,
+  DataType,
+  ForeignKey,
+  Model,
+  Table,
+} from 'sequelize-typescript';
+import { Customer } from '../customer/customer.model';
 
 interface Customer_cardAttrs {
   customer_id: number;
@@ -21,8 +29,12 @@ export class Customer_card extends Model<Customer_card, Customer_cardAttrs> {
   })
   id: number;
 
+  @ForeignKey(() => Customer)
   @Column({ type: DataType.INTEGER, allowNull: false })
   customer_id: number;
+  @BelongsTo(() => Customer)
+  customer: Customer;
+
   @Column({ type: DataType.STRING, allowNull: false })
   name: string;
   @Column({ type: DataType.STRING, allowNull: false })
