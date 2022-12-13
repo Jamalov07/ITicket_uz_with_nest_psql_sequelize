@@ -61,6 +61,7 @@ export class CartService {
     if (!cart) {
       throw new BadRequestException('Cart not found');
     }
+    await this.cartRepo.destroy({ where: { id: id } });
     return { message: 'Cart deleted', cart };
   }
 }

@@ -17,6 +17,17 @@ import { AdminModule } from './admin/admin.module';
 import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Admin } from './admin/admin.model';
+import { PaymentMethodModule } from './payment_method/payment_method.module';
+import { DeliveryMethodModule } from './delivery_method/delivery_method.module';
+import { DiscountCouponModule } from './discount_coupon/discount_coupon.module';
+import { StatusModule } from './status/status.module';
+import { TicketTypeModule } from './ticket_type/ticket_type.module';
+import { LanguageModule } from './language/language.module';
+import { CountryModule } from './country/country.module';
+import { RegionModule } from './region/region.module';
+import { DistrictModule } from './district/district.module';
+import { GenderModule } from './gender/gender.module';
+import { Country } from './country/country.model';
 
 @Module({
   imports: [
@@ -47,6 +58,16 @@ import { Admin } from './admin/admin.model';
     VenueModule,
     VenuePhotoModule,
     VenueTypeModule,
+    CountryModule,
+    PaymentMethodModule,
+    DeliveryMethodModule,
+    DiscountCouponModule,
+    StatusModule,
+    TicketTypeModule,
+    LanguageModule,
+    RegionModule,
+    DistrictModule,
+    GenderModule,
   ],
 })
 export class AppModule {}
