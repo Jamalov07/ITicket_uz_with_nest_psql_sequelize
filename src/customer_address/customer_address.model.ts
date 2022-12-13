@@ -14,7 +14,7 @@ interface Customer_addressAttrs {
   info: string;
 }
 
-@Table({ tableName: 'Customer_address' })
+@Table({ tableName: 'customer_address' })
 export class Customer_address extends Model<
   Customer_address,
   Customer_addressAttrs

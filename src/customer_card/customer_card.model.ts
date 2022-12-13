@@ -1,24 +1,18 @@
 import { Column, DataType, Model, Table } from 'sequelize-typescript';
 
-interface Customer_addressAttrs {
+interface Customer_cardAttrs {
   customer_id: number;
   name: string;
-  country_id: number;
-  region_id: number;
-  district_id: number;
-  street: string;
-  house: string;
-  flat: number;
-  location: string;
-  post_index: string;
-  info: string;
+  phone: string;
+  number: string;
+  year: string;
+  month: string;
+  is_active: boolean;
+  is_main: boolean;
 }
 
-@Table({ tableName: 'Customer_address' })
-export class Customer_address extends Model<
-  Customer_address,
-  Customer_addressAttrs
-> {
+@Table({ tableName: 'customer_card' })
+export class Customer_card extends Model<Customer_card, Customer_cardAttrs> {
   @Column({
     type: DataType.INTEGER,
     unique: true,
@@ -31,22 +25,16 @@ export class Customer_address extends Model<
   customer_id: number;
   @Column({ type: DataType.STRING, allowNull: false })
   name: string;
-  @Column({ type: DataType.INTEGER, allowNull: false })
-  country_id: number;
-  @Column({ type: DataType.INTEGER, allowNull: false })
-  region_id: number;
-  @Column({ type: DataType.INTEGER, allowNull: false })
-  district_id: number;
   @Column({ type: DataType.STRING, allowNull: false })
-  street: string;
+  phone: string;
   @Column({ type: DataType.STRING, allowNull: false })
-  house: string;
-  @Column({ type: DataType.INTEGER, allowNull: false })
-  flat: number;
+  number: string;
   @Column({ type: DataType.STRING, allowNull: false })
-  location: string;
+  year: string;
   @Column({ type: DataType.STRING, allowNull: false })
-  post_index: string;
-  @Column({ type: DataType.STRING, allowNull: false })
-  info: string;
+  month: string;
+  @Column({ type: DataType.BOOLEAN, allowNull: false })
+  is_active: boolean;
+  @Column({ type: DataType.BOOLEAN, allowNull: false })
+  is_main: boolean;
 }
