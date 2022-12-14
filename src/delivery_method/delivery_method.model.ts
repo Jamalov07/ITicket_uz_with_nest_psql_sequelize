@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Column, DataType, Model, Table } from 'sequelize-typescript';
 
 interface Delivery_methodAttrs {
@@ -6,7 +7,11 @@ interface Delivery_methodAttrs {
 }
 
 @Table({ tableName: 'delivery_method' })
-export class Delivery_method extends Model<Delivery_method, Delivery_methodAttrs> {
+export class Delivery_method extends Model<
+  Delivery_method,
+  Delivery_methodAttrs
+> {
+  @ApiProperty({ example: '1', description: 'unikal ID' })
   @Column({
     type: DataType.INTEGER,
     unique: true,
@@ -15,8 +20,11 @@ export class Delivery_method extends Model<Delivery_method, Delivery_methodAttrs
   })
   id: number;
 
+  @ApiProperty({ example: 'name', description: 'name' })
   @Column({ type: DataType.STRING, allowNull: false })
   name: string;
+
+  @ApiProperty({ example: 'descr', description: 'info' })
   @Column({ type: DataType.STRING, allowNull: false })
   description: string;
 }

@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   BelongsTo,
   Column,
@@ -22,6 +23,7 @@ interface TicketAttrs {
 
 @Table({ tableName: 'tickets' })
 export class Ticket extends Model<Ticket, TicketAttrs> {
+  @ApiProperty({ example: '1', description: 'unikal ID' })
   @Column({
     type: DataType.INTEGER,
     unique: true,
@@ -30,29 +32,34 @@ export class Ticket extends Model<Ticket, TicketAttrs> {
   })
   id: number;
 
+  @ApiProperty({ example: 'event', description: 'unikal ID' })
   @ForeignKey(() => Event)
   @Column({ type: DataType.INTEGER, allowNull: false })
   event_id: number;
   @BelongsTo(() => Event)
   event: Event;
 
+  @ApiProperty({ example: 'seat', description: 'unikal ID' })
   @ForeignKey(() => Seat)
   @Column({ type: DataType.INTEGER, allowNull: false })
   seat_id: number;
   @BelongsTo(() => Seat)
   seat: Seat;
 
+  @ApiProperty({ example: 'servicefee', description: 'unikal ID' })
   @Column({ type: DataType.INTEGER, allowNull: false })
   price: number;
   @Column({ type: DataType.INTEGER, allowNull: false })
   service_fee: number;
 
+  @ApiProperty({ example: 'status ', description: 'unikal ID' })
   @ForeignKey(() => Status)
   @Column({ type: DataType.INTEGER, allowNull: false })
   status_id: number;
   @BelongsTo(() => Status)
   status: Status;
 
+  @ApiProperty({ example: 'ticket type', description: 'unikal ID' })
   @ForeignKey(() => Ticket_type)
   @Column({ type: DataType.INTEGER, allowNull: false })
   ticket_type: number;

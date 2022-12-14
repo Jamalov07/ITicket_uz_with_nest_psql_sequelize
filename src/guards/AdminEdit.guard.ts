@@ -7,9 +7,10 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Observable } from 'rxjs';
+import { AdminService } from '../admin/admin.service';
 
 @Injectable()
-export class AdminGuard implements CanActivate {
+export class AdminEditGuard implements CanActivate {
   constructor(private readonly jwtService: JwtService) {}
   canActivate(
     context: ExecutionContext,
@@ -37,6 +38,9 @@ export class AdminGuard implements CanActivate {
       }
       if (!adminData.is_active) {
         throw new BadRequestException('admin not active');
+      }
+      if (adminData.sub !== Number(request.params.id)) {
+        throw new BadRequestException('Admin cannot edit or delete this admin');
       }
       return true;
     }

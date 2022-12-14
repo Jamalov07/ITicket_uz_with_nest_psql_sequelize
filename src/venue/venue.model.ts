@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   BelongsTo,
   Column,
@@ -27,6 +28,7 @@ interface VenueAttrs {
 
 @Table({ tableName: 'venues' })
 export class Venue extends Model<Venue, VenueAttrs> {
+  @ApiProperty({ example: '1', description: 'unikal ID' })
   @Column({
     type: DataType.INTEGER,
     unique: true,
@@ -35,32 +37,45 @@ export class Venue extends Model<Venue, VenueAttrs> {
   })
   id: number;
 
+  @ApiProperty({ example: '1', description: 'unikal ID' })
   @Column({ type: DataType.STRING, allowNull: false })
   name: string;
+
+  @ApiProperty({ example: '1', description: 'unikal ID' })
   @Column({ type: DataType.STRING, allowNull: false })
   address: string;
+
+  @ApiProperty({ example: '1', description: 'unikal ID' })
   @Column({ type: DataType.STRING, allowNull: false })
   location: string;
+
+  @ApiProperty({ example: '1', description: 'unikal ID' })
   @Column({ type: DataType.STRING, allowNull: false })
   site: string;
+
+  @ApiProperty({ example: '1', description: 'unikal ID' })
   @Column({ type: DataType.STRING, allowNull: false })
   phone: string;
 
+  @ApiProperty({ example: '1', description: 'unikal ID' })
   @ForeignKey(() => Venue_type)
   @Column({ type: DataType.INTEGER, allowNull: false })
   venue_type_id: number;
   @BelongsTo(() => Venue_type)
   venue: Venue_type;
 
+  @ApiProperty({ example: '1', description: 'unikal ID' })
   @Column({ type: DataType.STRING, allowNull: false })
   schema: string;
 
+  @ApiProperty({ example: '1', description: 'unikal ID' })
   @ForeignKey(() => Region)
   @Column({ type: DataType.INTEGER, allowNull: false })
   region_id: number;
   @BelongsTo(() => Region)
   region: Region;
 
+  @ApiProperty({ example: '1', description: 'unikal ID' })
   @ForeignKey(() => District)
   @Column({ type: DataType.INTEGER, allowNull: false })
   district_id: number;

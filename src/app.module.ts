@@ -51,6 +51,7 @@ import { Ticket_type } from './ticket_type/ticket_type.model';
 import { Venue } from './venue/venue.model';
 import { Venue_type } from './venue_type/venue_type.model';
 import { Venue_photo } from './venue_photo/venue_photo.model';
+import { FilesModule } from './files/files.module';
 
 @Module({
   imports: [
@@ -117,6 +118,7 @@ import { Venue_photo } from './venue_photo/venue_photo.model';
     RegionModule,
     DistrictModule,
     GenderModule,
+    FilesModule,
   ],
 })
 export class AppModule {}

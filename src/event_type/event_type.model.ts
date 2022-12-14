@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   BelongsTo,
   Column,
@@ -15,6 +16,7 @@ interface Event_typeAttrs {
 
 @Table({ tableName: 'event_types' })
 export class Event_type extends Model<Event_type, Event_typeAttrs> {
+  @ApiProperty({ example: '1', description: 'unikal ID' })
   @Column({
     type: DataType.INTEGER,
     unique: true,
@@ -23,9 +25,11 @@ export class Event_type extends Model<Event_type, Event_typeAttrs> {
   })
   id: number;
 
+  @ApiProperty({ example: '1', description: 'name' })
   @Column({ type: DataType.STRING, allowNull: false })
   name: string;
 
+  @ApiProperty({ example: '1', description: 'event_type ID' })
   @ForeignKey(() => Event_type)
   @Column({ type: DataType.INTEGER, allowNull: false })
   parent_event_type_id: number;

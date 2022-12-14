@@ -1,5 +1,11 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { FilesService } from '../files/files.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { Event } from './event.model';
@@ -9,16 +15,22 @@ export class EventService {
   constructor(
     @InjectModel(Event)
     private eventRepo: typeof Event,
+    private readonly fileService: FilesService,
   ) {}
 
-  async create(createEventDto: CreateEventDto) {
+  async create(createEventDto: CreateEventDto, image: any) {
     const candidate = await this.eventRepo.findOne({
       where: { ...createEventDto },
     });
     if (candidate) {
       throw new BadRequestException('this datas already axists in database');
     }
-    const newEvent = await this.eventRepo.create(createEventDto);
+
+    const fileName = await this.fileService.createFile(image);
+    const newEvent = await this.eventRepo.create({
+      ...createEventDto,
+      photo: fileName,
+    });
     return newEvent;
   }
 
@@ -41,14 +53,21 @@ export class EventService {
     return event;
   }
 
-  async update(id: number, updateEventDto: UpdateEventDto) {
+  async update(id: number, updateEventDto: UpdateEventDto, image: any) {
     const event = await this.eventRepo.findOne({
       where: { id: id },
     });
     if (!event) {
       throw new BadRequestException('Event not found');
     }
-
+    let fileName: string;
+    if (image) {
+      const ifExists = await this.fileService.deleteFile(image);
+      if (!ifExists) {
+        throw new HttpException("bunday fayl yo'q", HttpStatus.BAD_REQUEST);
+      }
+      fileName = await this.fileService.createFile(image);
+    }
     const candidate = await this.eventRepo.findOne({
       where: { ...updateEventDto },
     });
@@ -57,10 +76,13 @@ export class EventService {
     }
 
     const updatedEvent = await (
-      await this.eventRepo.update(updateEventDto, {
-        where: { id: id },
-        returning: true,
-      })
+      await this.eventRepo.update(
+        { ...updateEventDto, photo: fileName },
+        {
+          where: { id: id },
+          returning: true,
+        },
+      )
     )[1][0];
     return updatedEvent;
   }

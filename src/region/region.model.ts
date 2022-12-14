@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
 import { Customer_address } from '../customer_address/customer_address.model';
 import { Venue } from '../venue/venue.model';
@@ -9,6 +10,7 @@ interface RegionAttrs {
 
 @Table({ tableName: 'regions' })
 export class Region extends Model<Region, RegionAttrs> {
+  @ApiProperty({ example: '1', description: 'unikal ID' })
   @Column({
     type: DataType.INTEGER,
     unique: true,
@@ -17,8 +19,10 @@ export class Region extends Model<Region, RegionAttrs> {
   })
   id: number;
 
+  @ApiProperty({ example: 'name', description: 'name' })
   @Column({ type: DataType.STRING, allowNull: false })
   name: string;
+  @ApiProperty({ example: 'info', description: 'info' })
   @Column({ type: DataType.STRING, allowNull: false })
   description: string;
 

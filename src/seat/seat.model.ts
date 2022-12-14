@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   BelongsTo,
   Column,
@@ -20,6 +21,7 @@ interface SeatAttrs {
 
 @Table({ tableName: 'seats' })
 export class Seat extends Model<Seat, SeatAttrs> {
+  @ApiProperty({ example: '1', description: 'unikal ID' })
   @Column({
     type: DataType.INTEGER,
     unique: true,
@@ -28,25 +30,33 @@ export class Seat extends Model<Seat, SeatAttrs> {
   })
   id: number;
 
+  @ApiProperty({ example: 'sector', description: 'unikal ID' })
   @Column({ type: DataType.INTEGER, allowNull: false })
   sector: number;
+
+  @ApiProperty({ example: 'row', description: 'unikal ID' })
   @Column({ type: DataType.INTEGER, allowNull: false })
   row_number: number;
+
+  @ApiProperty({ example: 'number', description: 'unikal ID' })
   @Column({ type: DataType.INTEGER, allowNull: false })
   number: number;
 
+  @ApiProperty({ example: '1', description: 'unikal ID' })
   @ForeignKey(() => Venue)
   @Column({ type: DataType.INTEGER, allowNull: false })
   venue_id: number;
   @BelongsTo(() => Venue)
   venue: Venue;
 
-  @ForeignKey(()=>Seat_Type)
+  @ApiProperty({ example: '1', description: 'unikal ID' })
+  @ForeignKey(() => Seat_Type)
   @Column({ type: DataType.INTEGER, allowNull: false })
   seat_type_id: number;
   @BelongsTo(() => Seat_Type)
   seat_type: Seat_Type;
-  
+
+  @ApiProperty({ example: 'unknown', description: 'unikal ID' })
   @Column({ type: DataType.STRING, allowNull: false })
   location_in_schema: string;
 }

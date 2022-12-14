@@ -3,9 +3,10 @@ import { BookingService } from './booking.service';
 import { BookingController } from './booking.controller';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Booking } from './booking.model';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports: [SequelizeModule.forFeature([Booking])],
+  imports: [JwtModule, SequelizeModule.forFeature([Booking])],
   controllers: [BookingController],
   providers: [BookingService],
 })

@@ -1,5 +1,11 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { FilesService } from '../files/files.service';
 import { CreateVenuePhotoDto } from './dto/create-venue_photo.dto';
 import { UpdateVenuePhotoDto } from './dto/update-venue_photo.dto';
 import { Venue_photo } from './venue_photo.model';
@@ -9,18 +15,22 @@ export class VenuePhotoService {
   constructor(
     @InjectModel(Venue_photo)
     private venuePhotoRepo: typeof Venue_photo,
+    private readonly fileService: FilesService,
   ) {}
 
-  async create(createVenue_photoDto: CreateVenuePhotoDto) {
+  async create(createVenue_photoDto: CreateVenuePhotoDto, image) {
     const candidate = await this.venuePhotoRepo.findOne({
       where: { ...createVenue_photoDto },
     });
     if (candidate) {
       throw new BadRequestException('this datas already axists in database');
     }
-    const newVenue_photo = await this.venuePhotoRepo.create(
-      createVenue_photoDto,
-    );
+    const fileName = await this.fileService.createFile(image);
+
+    const newVenue_photo = await this.venuePhotoRepo.create({
+      ...createVenue_photoDto,
+      venue_photo: fileName,
+    });
     return newVenue_photo;
   }
 
@@ -42,14 +52,21 @@ export class VenuePhotoService {
     return venue_photo;
   }
 
-  async update(id: number, updateVenue_photoDto: UpdateVenuePhotoDto) {
+  async update(id: number, updateVenue_photoDto: UpdateVenuePhotoDto, image) {
     const venue_photo = await this.venuePhotoRepo.findOne({
       where: { id: id },
     });
     if (!venue_photo) {
       throw new BadRequestException('Venue_photo not found');
     }
-
+    let fileName: string;
+    if (image) {
+      const ifExists = await this.fileService.deleteFile(image);
+      if (!ifExists) {
+        throw new HttpException("bunday fayl yo'q", HttpStatus.BAD_REQUEST);
+      }
+      fileName = await this.fileService.createFile(image);
+    }
     const candidate = await this.venuePhotoRepo.findOne({
       where: { ...updateVenue_photoDto },
     });
@@ -58,10 +75,13 @@ export class VenuePhotoService {
     }
 
     const updatedVenue_photo = await (
-      await this.venuePhotoRepo.update(updateVenue_photoDto, {
-        where: { id: id },
-        returning: true,
-      })
+      await this.venuePhotoRepo.update(
+        { ...updateVenue_photoDto, venue_photo: fileName },
+        {
+          where: { id: id },
+          returning: true,
+        },
+      )
     )[1][0];
     return updatedVenue_photo;
   }

@@ -22,5 +22,4 @@ lang => id ,name, description
 country => id,name,description
 region => id,name,description
 district => id,name,description
-flat => id , name, description =========================
 gender => id, name , description
